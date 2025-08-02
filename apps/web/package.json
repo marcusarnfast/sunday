@@ -1,0 +1,40 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm with-env next dev --turbopack --port 3000",
+    "build": "pnpm with-env next build",
+    "start": "pnpm with-env next start",
+    "clean": "git clean -xdf .cache .turbo node_modules .next",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "with-env": "dotenv -e ../../.env --",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "catalog:",
+    "@sunday/monday": "workspace:*",
+    "@sunday/ui": "workspace:*",
+    "@t3-oss/env-nextjs": "catalog:",
+    "@tailwindcss/postcss": "catalog:",
+    "framer-motion": "^12.23.11",
+    "lucide-react": "catalog:",
+    "next": "catalog:",
+    "nuqs": "^2.4.3",
+    "postcss": "catalog:",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19",
+    "react-hook-form": "catalog:",
+    "react-hotkeys-hook": "^5.1.0",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@sunday/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "typescript": "catalog:"
+  }
+}

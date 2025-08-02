@@ -1,0 +1,10 @@
+{
+	"extends": "@sunday/typescript/react-library.json",
+	"compilerOptions": {
+		"paths": {
+			"@sunday/ui/*": ["./src/*"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["node_modules"],
+}

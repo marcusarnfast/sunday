@@ -1,0 +1,28 @@
+{
+  "name": "@sunday/emails",
+  "version": "1.0.0",
+  "exports": {
+    "./*": "./src/*.tsx"
+  },
+  "scripts": {
+    "dev": "email dev --dir src --port 3001",
+    "emails-export": "email export --dir src --outDir src/html --pretty",
+    "clean": "git clean -xdf .cache .turbo dist node_modules .react-email src/html",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "devDependencies": {
+    "react-email": "4.2.5"
+  },
+  "dependencies": {
+    "@react-email/components": "0.3.3",
+    "@react-email/preview-server": "^4.2.5",
+    "@react-email/render": "^1.1.4",
+    "@sunday/typescript": "workspace:*",
+    "@sunday/ui": "workspace:*",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  }
+}

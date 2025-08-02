@@ -1,0 +1,22 @@
+{
+  "name": "sunday",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "clean": "turbo run clean && git clean -xdf .cache .turbo node_modules",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "ui-add": "turbo run ui-add",
+    "emails-export": "turbo run emails-export"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.1.2",
+    "turbo": "^2.5.5",
+    "typescript": "catalog:"
+  },
+  "packageManager": "pnpm@10.13.1",
+  "engines": {
+    "node": ">=22"
+  }
+}

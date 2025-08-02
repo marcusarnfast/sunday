@@ -1,0 +1,10 @@
+{
+	"extends": "@sunday/typescript/convex.json",
+	"compilerOptions": {
+		"paths": {
+			"@sunday/monday/*": ["./src/*"]
+		}
+	},
+	"include": ["src"],
+	"exclude": ["_generated"]
+}

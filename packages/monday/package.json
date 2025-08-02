@@ -1,0 +1,47 @@
+{
+  "name": "@sunday/monday",
+  "version": "0.0.0",
+  "private": true,
+  "exports": {
+    "./env": "./env.ts",
+    "./api": {
+      "import": "./src/_generated/api.js",
+      "types": "./src/_generated/api.d.ts"
+    },
+    "./server": {
+      "import": "./src/_generated/server.js",
+      "types": "./src/_generated/server.d.ts"
+    },
+    "./data-model": {
+      "types": "./src/_generated/dataModel.d.ts"
+    }
+  },
+  "scripts": {
+    "dev": "pnpm with-env convex dev --tail-logs",
+    "setup": "pnpm with-env convex dev --once && pnpm with-env convex env set VALIDATE_ENV=true",
+    "seed": "pnpm with-env convex dev --once && pnpm with-env convex run init",
+    "clean": "git clean -xdf .cache .turbo dist node_modules _generated",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "format-and-lint": "biome check .",
+    "format-and-lint:fix": "biome check . --write",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "devDependencies": {
+    "@sunday/typescript": "workspace:*",
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  },
+  "dependencies": {
+    "@sunday/emails": "workspace:*",
+    "@convex-dev/auth": "catalog:",
+    "@convex-dev/crons": "^0.1.9",
+    "@convex-dev/resend": "^0.1.7",
+    "@react-email/render": "^1.1.3",
+    "@t3-oss/env-nextjs": "catalog:",
+    "convex": "catalog:",
+    "dotenv-cli": "catalog:",
+    "oslo": "^1.2.1",
+    "resend": "^4.7.0",
+    "zod": "catalog:"
+  }
+}
