@@ -40,6 +40,7 @@
     }
   },
   "globalEnv": [
+    "CONVEX_DEPLOY_KEY",
     "CONVEX_DEPLOYMENT",
     "CONVEX_URL",
     "NEXT_PUBLIC_CONVEX_URL",
