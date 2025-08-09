@@ -9,7 +9,13 @@ import {
   HeaderTitle,
 } from "@sunday/ui/components/header";
 import { type Preloaded, usePreloadedQuery } from "convex/react";
-import { CalendarDaysIcon, HouseIcon, ListCheckIcon, Settings2Icon, UsersRoundIcon } from "lucide-react";
+import {
+  CalendarDaysIcon,
+  HouseIcon,
+  ListCheckIcon,
+  Settings2Icon,
+  UsersRoundIcon,
+} from "lucide-react";
 import { useHouseParams } from "~/hooks/use-house-params";
 
 type HouseHeaderProps = {
@@ -78,11 +84,7 @@ export function HouseHeader({ preloadedHouse }: HouseHeaderProps) {
               variant="ghost"
               className="hover:bg-accent hover:text-foreground data-[state=active]:after:bg-primary data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-[1px] after:h-0.5 data-[state=active]:bg-transparent data-[state=active]:shadow-none"
             >
-              <tab.icon
-                className="- opacity-60"
-                size={16}
-                aria-hidden="true"
-              />
+              <tab.icon className="- opacity-60" size={16} aria-hidden="true" />
               {tab.label}
             </Button>
           ))}

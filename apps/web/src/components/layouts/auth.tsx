@@ -19,10 +19,9 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       </div>
       <div className="flex-1 p-2 hidden md:block relative">
         <div className="relative size-full rounded-3xl overflow-hidden">
-          <div className="absolute inset-0 bg-primary">
-          </div>
+          <div className="absolute inset-0 bg-primary"></div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }

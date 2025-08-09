@@ -1,12 +1,15 @@
 "use client";
 
-import { Button, ButtonProps } from "@sunday/ui/components/button";
 import { useAuthActions } from "@convex-dev/auth/react";
+import { Button, type ButtonProps } from "@sunday/ui/components/button";
 import { toast } from "@sunday/ui/components/sonner";
 
-type SignOutButtonProps = ButtonProps
+type SignOutButtonProps = ButtonProps;
 
-export function SignOutButton({ variant = "default", ...props }: SignOutButtonProps) {
+export function SignOutButton({
+  variant = "default",
+  ...props
+}: SignOutButtonProps) {
   const { signOut } = useAuthActions();
 
   const handleSignOut = async () => {
@@ -17,5 +20,9 @@ export function SignOutButton({ variant = "default", ...props }: SignOutButtonPr
     });
   };
 
-  return <Button onClick={handleSignOut} variant={variant} {...props}>Sign Out</Button>;
+  return (
+    <Button onClick={handleSignOut} variant={variant} {...props}>
+      Sign Out
+    </Button>
+  );
 }

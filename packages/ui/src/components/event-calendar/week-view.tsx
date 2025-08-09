@@ -327,6 +327,16 @@ export function WeekView({
             {/* Positioned events */}
             {(processedDayEvents[dayIndex] ?? []).map((positionedEvent) => (
               <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handleEventClick(
+                      positionedEvent.event,
+                      e as unknown as React.MouseEvent,
+                    );
+                  }
+                }}
                 key={positionedEvent.event.id}
                 className="absolute z-10 px-0.5"
                 style={{
@@ -382,11 +392,11 @@ export function WeekView({
                           "absolute h-[calc(var(--week-cells-height)/4)] w-full",
                           quarter === 0 && "top-0",
                           quarter === 1 &&
-                          "top-[calc(var(--week-cells-height)/4)]",
+                            "top-[calc(var(--week-cells-height)/4)]",
                           quarter === 2 &&
-                          "top-[calc(var(--week-cells-height)/4*2)]",
+                            "top-[calc(var(--week-cells-height)/4*2)]",
                           quarter === 3 &&
-                          "top-[calc(var(--week-cells-height)/4*3)]",
+                            "top-[calc(var(--week-cells-height)/4*3)]",
                         )}
                         onClick={() => {
                           const startTime = new Date(day);

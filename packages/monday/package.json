@@ -28,18 +28,20 @@
   },
   "devDependencies": {
     "@sunday/typescript": "workspace:*",
+    "@types/mime-db": "^1.43.6",
     "@types/node": "catalog:",
     "typescript": "catalog:"
   },
   "dependencies": {
-    "@sunday/emails": "workspace:*",
     "@convex-dev/auth": "catalog:",
     "@convex-dev/crons": "^0.1.9",
     "@convex-dev/resend": "^0.1.7",
     "@react-email/render": "^1.1.3",
+    "@sunday/emails": "workspace:*",
     "@t3-oss/env-nextjs": "catalog:",
     "convex": "catalog:",
     "dotenv-cli": "catalog:",
+    "mime-db": "^1.54.0",
     "oslo": "^1.2.1",
     "resend": "^4.7.0",
     "zod": "catalog:"

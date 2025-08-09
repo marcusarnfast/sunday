@@ -5,5 +5,7 @@ type ProvidersProps = {
 };
 
 export function ServerProviders({ children }: ProvidersProps) {
-  return <ConvexAuthNextjsServerProvider>{children}</ConvexAuthNextjsServerProvider>;
+  return (
+    <ConvexAuthNextjsServerProvider>{children}</ConvexAuthNextjsServerProvider>
+  );
 }

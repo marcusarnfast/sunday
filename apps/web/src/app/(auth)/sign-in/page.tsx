@@ -13,6 +13,5 @@ export default function Page() {
       </div>
       <SignInForm />
     </div>
-  )
-
+  );
 }

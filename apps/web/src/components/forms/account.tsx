@@ -7,18 +7,17 @@ import { Button } from "@sunday/ui/components/button";
 import { Form } from "@sunday/ui/components/form";
 import { toast } from "@sunday/ui/components/sonner";
 import { type Preloaded, useMutation, usePreloadedQuery } from "convex/react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
 import z from "zod/v4";
-import { useStorageUpload } from "~/hooks/use-storage-upload";
 import { DisplayField } from "./fields/display";
 import { TextField } from "./fields/text";
 import { UploadField } from "./fields/upload";
-import { fileMetadataSchema } from "./schemas/file-metadata";
 
 const accountFormSchema = z.object({
+  _id: z.string().optional(),
   name: z.string().min(1),
-  image: z.union([z.instanceof(File), fileMetadataSchema]).nullable(),
+  imageId: z.string().optional(),
 });
 
 type AccountFormProps = {
@@ -26,56 +25,53 @@ type AccountFormProps = {
 };
 
 export function AccountForm({ preloadedUser }: AccountFormProps) {
-  const initialData = usePreloadedQuery(preloadedUser);
+  const account = usePreloadedQuery(preloadedUser);
   const updateMutation = useMutation(api.users.updateUser);
-  const { uploadFile } = useStorageUpload();
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof accountFormSchema>>({
     resolver: zodResolver(accountFormSchema),
-    defaultValues: initialData
+    defaultValues: account
       ? {
-        ...initialData,
-      }
+          ...account,
+        }
       : {
-        name: "",
-        image: null,
-      },
+          name: "",
+        },
   });
 
+  const isDirty = form.formState.isDirty;
+
   const handleSubmit = (data: z.infer<typeof accountFormSchema>) => {
+    if (!isDirty) return;
+
     toast.promise(
       async () => {
-        try {
-          const uploaded = await uploadFile({
-            newFile: data.image,
-            previousId: initialData?.imageId as Id<"_storage"> | undefined,
-          });
+        const account = await updateMutation({
+          ...data,
+          _id: data._id as Id<"users"> | undefined,
+          imageId: data.imageId as Id<"_storage"> | undefined,
+        });
 
-          const payload = {
-            name: data.name,
-            imageId: uploaded?.id,
-          };
-
-          await updateMutation(payload);
-
-          form.reset({
-            name: data.name,
-            image: data.image,
-          });
-
-          router.push("/");
-        } catch (error) {
-          console.error(error);
-        }
+        form.reset({ ...account });
       },
       {
         loading: "Updating account...",
         success: "Account updated successfully",
-        error: "Failed to update account",
+        error: "Failed to save account",
       },
     );
   };
+
+  useHotkeys(
+    "mod+s",
+    () => {
+      form.handleSubmit(handleSubmit)();
+    },
+    {
+      enabled: isDirty,
+      enableOnFormTags: true,
+    },
+  );
 
   return (
     <Form {...form}>
@@ -92,21 +88,22 @@ export function AccountForm({ preloadedUser }: AccountFormProps) {
             placeholder="Your name"
           />
           <DisplayField
-            value={initialData?.email}
+            value={account?.email}
             name="email"
             label="Email"
             placeholder="Your email"
           />
           <UploadField
             control={form.control}
-            name="image"
-            label="Profile picture"
+            name="imageId"
+            path="/accounts/"
+            label="Profile Image"
+            className="aspect-square"
             optional
-            description="This image will be shown as your profile picture"
-            className="aspect-square size-64"
+            description="This image will be shown as your profile image"
           />
           <div className="flex justify-end">
-            <Button type="submit" form="form">
+            <Button type="submit" form="form" disabled={!isDirty}>
               Save
             </Button>
           </div>

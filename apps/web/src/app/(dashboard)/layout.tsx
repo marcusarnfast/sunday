@@ -6,5 +6,7 @@ type LayoutProps = {
 };
 
 export default function Layout({ children, breadcrumbs }: LayoutProps) {
-  return <DashboardLayout breadcrumbs={breadcrumbs}>{children}</DashboardLayout>;
-}   
+  return (
+    <DashboardLayout breadcrumbs={breadcrumbs}>{children}</DashboardLayout>
+  );
+}

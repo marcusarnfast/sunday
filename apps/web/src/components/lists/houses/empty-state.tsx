@@ -10,7 +10,8 @@ export function EmptyState() {
           You don't have any houses yet.
         </p>
         <p className="text-sm text-muted-foreground">
-          Get started by creating a new house or get your friends to invite you to their house.
+          Get started by creating a new house or get your friends to invite you
+          to their house.
         </p>
       </div>
       <div className="flex flex-col gap-2">
@@ -22,5 +23,5 @@ export function EmptyState() {
         </Button>
       </div>
     </div>
-  )
+  );
 }

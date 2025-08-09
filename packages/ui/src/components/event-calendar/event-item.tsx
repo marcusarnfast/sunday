@@ -52,9 +52,9 @@ function EventWrapper({
   // Always use the currentTime (if provided) to determine if the event is in the past
   const displayEnd = currentTime
     ? new Date(
-      new Date(currentTime).getTime() +
-      (new Date(event.end).getTime() - new Date(event.start).getTime()),
-    )
+        new Date(currentTime).getTime() +
+          (new Date(event.end).getTime() - new Date(event.start).getTime()),
+      )
     : new Date(event.end);
 
   const isEventInPast = isPast(displayEnd);
@@ -123,9 +123,9 @@ export function EventItem({
   const displayEnd = useMemo(() => {
     return currentTime
       ? new Date(
-        new Date(currentTime).getTime() +
-        (new Date(event.end).getTime() - new Date(event.start).getTime()),
-      )
+          new Date(currentTime).getTime() +
+            (new Date(event.end).getTime() - new Date(event.start).getTime()),
+        )
       : new Date(event.end);
   }, [currentTime, event.start, event.end]);
 

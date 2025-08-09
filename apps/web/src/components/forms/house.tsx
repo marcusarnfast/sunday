@@ -6,88 +6,61 @@ import type { Id } from "@sunday/monday/data-model";
 import { Button } from "@sunday/ui/components/button";
 import { Form } from "@sunday/ui/components/form";
 import { toast } from "@sunday/ui/components/sonner";
-import {
-  type Preloaded,
-  useMutation,
-  usePreloadedQuery,
-  useQuery,
-} from "convex/react";
+import { type Preloaded, useMutation, usePreloadedQuery } from "convex/react";
 import { useForm } from "react-hook-form";
 import { useHotkeys } from "react-hotkeys-hook";
 import z from "zod/v4";
-import { useStorageUpload } from "~/hooks/use-storage-upload";
 import { TextField } from "./fields/text";
 import { TextAreaField } from "./fields/text-area";
 import { UploadField } from "./fields/upload";
-import { fileMetadataSchema } from "./schemas/file-metadata";
-
 
 const houseFormSchema = z.object({
+  _id: z.string().optional(),
   name: z.string().min(1),
-  address: z.string().min(1),
+  address: z.string().optional(),
   description: z.string().optional(),
-  image: z.union([z.instanceof(File), fileMetadataSchema]).nullable(),
+  imageId: z.string().optional(),
 });
 
-
 type HouseFormProps = {
-  houseId?: Id<"houses">;
   preloadedHouse?: Preloaded<typeof api.houses.getById>;
 };
 
-export function HouseForm({ houseId, preloadedHouse }: HouseFormProps) {
-  const initialData = preloadedHouse ? usePreloadedQuery(preloadedHouse) : null;
-  const createMutation = useMutation(api.houses.createHouse);
-  const updateMutation = useMutation(api.houses.updateHouse);
-  const { uploadFile } = useStorageUpload();
+export function HouseForm({ preloadedHouse }: HouseFormProps) {
+  const house = preloadedHouse ? usePreloadedQuery(preloadedHouse) : null;
+  const createOrUpdateMutation = useMutation(api.houses.createOrUpdateHouse);
 
   const form = useForm<z.infer<typeof houseFormSchema>>({
     resolver: zodResolver(houseFormSchema),
-    defaultValues: initialData
+    defaultValues: house
       ? {
-        ...initialData,
-      }
+          ...house,
+        }
       : {
-        name: "",
-        address: "",
-        image: null,
-      },
+          name: "",
+          address: "",
+        },
   });
 
   const isDirty = form.formState.isDirty;
+  const isUpdating = !!house;
 
   const handleSubmit = (data: z.infer<typeof houseFormSchema>) => {
     if (!isDirty) return;
 
     toast.promise(
       async () => {
-        const uploaded = await uploadFile({
-          newFile: data.image,
-          previousId: initialData?.image?.id as Id<"_storage"> | undefined,
+        const house = await createOrUpdateMutation({
+          ...data,
+          _id: data._id as Id<"houses"> | undefined,
+          imageId: data.imageId as Id<"_storage"> | undefined,
         });
 
-        const payload = {
-          name: data.name,
-          address: data.address,
-          description: data.description,
-          imageId: uploaded?.id,
-        };
-
-        if (houseId) {
-          await updateMutation({ id: houseId, ...payload });
-        } else {
-          await createMutation(payload);
-        }
-        form.reset({
-          name: data.name,
-          address: data.address,
-          description: data.description,
-          image: data.image,
-        });
+        form.reset({ ...house });
       },
       {
-        loading: houseId ? "Updating house..." : "Creating house...",
-        success: houseId
+        loading: isUpdating ? "Updating house..." : "Creating house...",
+        success: isUpdating
           ? "House updated successfully"
           : "House created successfully",
         error: "Failed to save house",
@@ -135,11 +108,11 @@ export function HouseForm({ houseId, preloadedHouse }: HouseFormProps) {
           />
           <UploadField
             control={form.control}
-            name="image"
+            name="imageId"
+            path="/houses/"
             label="Image"
             optional
             description="This image will be shown as the house's cover image"
-            className="min-h-96"
           />
           <div className="flex justify-end">
             <Button type="submit" form="form" disabled={!isDirty}>

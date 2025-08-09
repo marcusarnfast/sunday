@@ -21,6 +21,7 @@
     "@tailwindcss/postcss": "catalog:",
     "framer-motion": "^12.23.11",
     "lucide-react": "catalog:",
+    "mime-db": "^1.54.0",
     "next": "catalog:",
     "nuqs": "^2.4.3",
     "postcss": "catalog:",

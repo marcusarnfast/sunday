@@ -12,6 +12,6 @@ export function SupportHeader() {
         <HeaderTitle>Support</HeaderTitle>
         <HeaderDescription>Get help with Sunday</HeaderDescription>
       </HeaderContent>
-    </Header >
+    </Header>
   );
 }

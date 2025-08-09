@@ -12,6 +12,6 @@ export function HomeHeader() {
         <HeaderTitle>Home</HeaderTitle>
         <HeaderDescription>Welcome back to Sunday</HeaderDescription>
       </HeaderContent>
-    </Header >
+    </Header>
   );
 }

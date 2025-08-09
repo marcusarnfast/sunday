@@ -8,7 +8,6 @@ import type { Preloaded } from "convex/react";
 import { useHouseParams } from "~/hooks/use-house-params";
 import { InviteMemberDialog } from "../dialogs/invite-member";
 import { HouseForm } from "../forms/house";
-import { InviteMemberForm } from "../forms/invite-member";
 import HouseCalendar from "../house-calendar";
 import HouseTodo from "../house-todo";
 import { HouseMembershipsList } from "../lists/house-memberships";
@@ -82,10 +81,7 @@ export function HouseTabs({
               </p>
             </div>
           </div>
-          <HouseForm
-            houseId={houseId as Id<"houses">}
-            preloadedHouse={preloadedHouse}
-          />
+          <HouseForm preloadedHouse={preloadedHouse} />
         </TabsContent>
       </Container>
     </Tabs>

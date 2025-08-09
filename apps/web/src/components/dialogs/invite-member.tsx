@@ -2,10 +2,8 @@ import type { Id } from "@sunday/monday/data-model";
 import { Button } from "@sunday/ui/components/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,

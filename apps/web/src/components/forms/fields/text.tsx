@@ -34,13 +34,21 @@ export function TextField<T extends FieldValues>({
         <FormItem>
           <div className="flex items-center justify-between gap-1">
             <FormLabel>{label}</FormLabel>
-            {optional && <span className="text-muted-foreground text-xs font-medium">Optional</span>}
+            {optional && (
+              <span className="text-muted-foreground text-xs font-medium">
+                Optional
+              </span>
+            )}
           </div>
           <FormControl>
             <Input
               {...field}
               readOnly={readOnly}
-              value={field.value === undefined || field.value === null ? "" : field.value}
+              value={
+                field.value === undefined || field.value === null
+                  ? ""
+                  : field.value
+              }
               placeholder={placeholder}
               onChange={(e) => {
                 if (readOnly) return;
@@ -51,11 +59,12 @@ export function TextField<T extends FieldValues>({
           </FormControl>
           <FormMessage />
           {readOnly && (
-            <FormDescription className="text-muted-foreground text-xs">This field is read only and cannot be changed</FormDescription>
+            <FormDescription className="text-muted-foreground text-xs">
+              This field is read only and cannot be changed
+            </FormDescription>
           )}
         </FormItem>
       )}
     />
   );
 }
-

@@ -10,6 +10,7 @@
 
 import type * as actions from "../actions.js";
 import type * as auth from "../auth.js";
+import type * as crons from "../crons.js";
 import type * as email from "../email.js";
 import type * as emails from "../emails.js";
 import type * as houses from "../houses.js";
@@ -18,6 +19,7 @@ import type * as invitations from "../invitations.js";
 import type * as memberships from "../memberships.js";
 import type * as storage from "../storage.js";
 import type * as users from "../users.js";
+import type * as utils_mime from "../utils/mime.js";
 
 import type {
   ApiFromModules,
@@ -36,6 +38,7 @@ import type {
 declare const fullApi: ApiFromModules<{
   actions: typeof actions;
   auth: typeof auth;
+  crons: typeof crons;
   email: typeof email;
   emails: typeof emails;
   houses: typeof houses;
@@ -44,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   memberships: typeof memberships;
   storage: typeof storage;
   users: typeof users;
+  "utils/mime": typeof utils_mime;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

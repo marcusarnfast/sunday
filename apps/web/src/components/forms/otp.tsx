@@ -52,7 +52,7 @@ export function OtpForm({ email }: OtpFormProps) {
           await signInOtp(data);
 
           router.push("/");
-        } catch (error) {
+        } catch {
           throw new Error();
         }
       },

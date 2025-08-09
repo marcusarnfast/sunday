@@ -12,6 +12,6 @@ export function AccountHeader() {
         <HeaderTitle>Account</HeaderTitle>
         <HeaderDescription>Manage your account</HeaderDescription>
       </HeaderContent>
-    </Header >
+    </Header>
   );
 }

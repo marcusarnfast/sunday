@@ -1,4 +1,9 @@
-import { Breadcrumb, BreadcrumbList, BreadcrumbItem, BreadcrumbLink } from "@sunday/ui/components/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+} from "@sunday/ui/components/breadcrumb";
 import Link from "next/link";
 
 export default function Page() {
@@ -12,5 +17,5 @@ export default function Page() {
         </BreadcrumbItem>
       </BreadcrumbList>
     </Breadcrumb>
-  )
+  );
 }

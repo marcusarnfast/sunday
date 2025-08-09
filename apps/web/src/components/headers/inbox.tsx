@@ -12,6 +12,6 @@ export function InboxHeader() {
         <HeaderTitle>Inbox</HeaderTitle>
         <HeaderDescription>Manage your inbox</HeaderDescription>
       </HeaderContent>
-    </Header >
+    </Header>
   );
 }

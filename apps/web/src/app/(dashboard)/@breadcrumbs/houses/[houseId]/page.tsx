@@ -8,10 +8,8 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@sunday/ui/components/breadcrumb";
-import { fetchQuery, preloadQuery } from "convex/nextjs";
+import { fetchQuery } from "convex/nextjs";
 import Link from "next/link";
-import { HouseHeader } from "~/components/headers/house";
-import { HouseTabs } from "~/components/tabs/house";
 
 type Props = {
   params: Promise<{ houseId: Id<"houses"> }>;
@@ -20,7 +18,6 @@ type Props = {
 export default async function Page({ params }: Props) {
   const { houseId } = await params;
   const token = await convexAuthNextjsToken();
-
 
   const data = await fetchQuery(
     api.houses.getById,

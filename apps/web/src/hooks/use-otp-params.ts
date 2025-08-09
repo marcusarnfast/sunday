@@ -1,7 +1,7 @@
-import { createLoader, parseAsString } from 'nuqs/server'
- 
+import { createLoader, parseAsString } from "nuqs/server";
+
 export const otpParams = {
   email: parseAsString,
-}
- 
-export const loadOtpParams = createLoader(otpParams)
+};
+
+export const loadOtpParams = createLoader(otpParams);

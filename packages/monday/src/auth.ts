@@ -2,33 +2,32 @@ import { Email } from "@convex-dev/auth/providers/Email";
 import { convexAuth } from "@convex-dev/auth/server";
 import { alphabet, generateRandomString } from "oslo/crypto";
 import { Resend as ResendAPI } from "resend";
-import { internal } from "./_generated/api";
 
 // Now it would be really nice to be able use the resend component here with the react email generation... But i can't seem to get it to work...
 export const ResendOTP = Email({
-	id: "resend-otp",
-	apiKey: process.env.RESEND_API_KEY,
-	maxAge: 60 * 15, // 15 minutes
-	generateVerificationToken() {
-		return generateRandomString(6, alphabet("0-9"));
-	},
-	async sendVerificationRequest({ identifier: email, provider, token }) {
-		const resend = new ResendAPI(provider.apiKey);
-		const { error } = await resend.emails.send({
-			from: "Sunday <verify@sunday.codes>",
-			to: [email],
-			subject: "One time password | Sunday",
-			html: otpHTML(token),
-		});
+  id: "resend-otp",
+  apiKey: process.env.RESEND_API_KEY,
+  maxAge: 60 * 15, // 15 minutes
+  generateVerificationToken() {
+    return generateRandomString(6, alphabet("0-9"));
+  },
+  async sendVerificationRequest({ identifier: email, provider, token }) {
+    const resend = new ResendAPI(provider.apiKey);
+    const { error } = await resend.emails.send({
+      from: "Sunday <verify@sunday.codes>",
+      to: [email],
+      subject: "One time password | Sunday",
+      html: otpHTML(token),
+    });
 
-		if (error) {
-			throw new Error(JSON.stringify(error));
-		}
-	},
+    if (error) {
+      throw new Error(JSON.stringify(error));
+    }
+  },
 });
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
-	providers: [ResendOTP],
+  providers: [ResendOTP],
 });
 
 export const otpHTML = (token: string) => `

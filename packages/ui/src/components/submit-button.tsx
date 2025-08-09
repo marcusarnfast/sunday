@@ -1,11 +1,11 @@
-import { Loader2Icon } from "lucide-react";
-import { cn } from "@sunday/ui/utils/cn";
 import { Button, type ButtonProps } from "@sunday/ui/components/button";
+import { cn } from "@sunday/ui/utils/cn";
+import { Loader2Icon } from "lucide-react";
 
 type SubmitButtonProps = ButtonProps & {
   children: React.ReactNode;
   isSubmitting: boolean;
-}
+};
 
 export function SubmitButton({
   children,
@@ -30,4 +30,3 @@ export function SubmitButton({
     </Button>
   );
 }
-

@@ -1,13 +1,11 @@
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@sunday/ui/components/form";
 import { Input } from "@sunday/ui/components/input";
-import type { Control, FieldValues, Path } from "react-hook-form";
 
 type Props = {
   label: string;
@@ -18,13 +16,7 @@ type Props = {
   value?: string;
 };
 
-export function DisplayField({
-  label,
-  name,
-  placeholder,
-  optional,
-  value,
-}: Props) {
+export function DisplayField({ label, name, placeholder, value }: Props) {
   return (
     <FormField
       name={name}
@@ -32,7 +24,9 @@ export function DisplayField({
         <FormItem>
           <div className="flex items-center justify-between gap-1">
             <FormLabel>{label}</FormLabel>
-            <span className="text-muted-foreground text-xs font-medium">Read only</span>
+            <span className="text-muted-foreground text-xs font-medium">
+              Read only
+            </span>
           </div>
           <FormControl>
             <Input
@@ -40,7 +34,7 @@ export function DisplayField({
               readOnly={true}
               value={value}
               placeholder={placeholder}
-              onChange={(e) => {
+              onChange={() => {
                 return;
               }}
             />
@@ -51,4 +45,3 @@ export function DisplayField({
     />
   );
 }
-

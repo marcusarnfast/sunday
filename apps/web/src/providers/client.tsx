@@ -15,7 +15,7 @@ export function ClientProviders({ children }: ProvidersProps) {
       <NuqsAdapter>
         <ThemeProvider>
           {children}
-          <Toaster closeButton />
+          <Toaster richColors />
         </ThemeProvider>
       </NuqsAdapter>
     </ConvexClientProvider>

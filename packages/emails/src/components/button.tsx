@@ -12,7 +12,13 @@ type ButtonProps = {
   href: string;
 };
 
-export default function Button({ children, href, className, variant = "default", size = "default" }: ButtonProps) {
+export default function Button({
+  children,
+  href,
+  className,
+  variant = "default",
+  size = "default",
+}: ButtonProps) {
   return (
     <ButtonComponent
       href={href}

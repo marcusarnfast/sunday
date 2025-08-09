@@ -2,12 +2,10 @@ import { convexAuthNextjsToken } from "@convex-dev/auth/nextjs/server";
 import { api } from "@sunday/monday/api";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@sunday/ui/components/dialog";
 import { preloadQuery } from "convex/nextjs";
 import { SetupAccount } from "../forms/setup-account";

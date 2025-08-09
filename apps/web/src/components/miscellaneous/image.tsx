@@ -1,6 +1,6 @@
 "use client";
 
-import { BugIcon, ImageIcon, Loader2Icon } from "lucide-react";
+import { BugIcon, Loader2Icon } from "lucide-react";
 import NextImage from "next/image";
 import { type ComponentProps, useState } from "react";
 
@@ -36,10 +36,11 @@ export function ImageLoading() {
 
 export function ImageError() {
   return (
-    <div className="absolute inset-0 bg-muted flex items-center justify-center">
+    <div className="absolute inset-0 bg-muted flex items-center justify-center gap-2">
       <BugIcon className="size-4 text-muted-foreground" />
-      <p className="text-sm text-muted-foreground">Error loading image</p>
+      <p className="text-sm text-muted-foreground font-medium">
+        Error loading image
+      </p>
     </div>
   );
 }
-

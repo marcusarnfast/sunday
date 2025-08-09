@@ -40,7 +40,7 @@ export function SignInForm() {
           await signIn(data);
 
           router.push(`/otp?email=${data.email}`);
-        } catch (error) {
+        } catch {
           throw new Error();
         }
       },

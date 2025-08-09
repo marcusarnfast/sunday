@@ -16,7 +16,12 @@ import {
   SidebarMenuItem,
 } from "@sunday/ui/components/sidebar";
 import { useQuery } from "convex/react";
-import { EllipsisVerticalIcon, LogOutIcon, MailboxIcon, SettingsIcon } from "lucide-react";
+import {
+  EllipsisVerticalIcon,
+  LogOutIcon,
+  MailboxIcon,
+  SettingsIcon,
+} from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "~/hooks/use-auth";
 import { Image } from "./image";
@@ -24,6 +29,10 @@ import { Image } from "./image";
 export function UserSidebarMenu() {
   const user = useQuery(api.users.getUser);
   const { signOut } = useAuth();
+  const image = useQuery(
+    api.storage.getById,
+    user?.imageId ? { storageId: user.imageId } : "skip",
+  );
 
   if (!user) {
     return null;
@@ -39,9 +48,9 @@ export function UserSidebarMenu() {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="size-8 rounded-lg bg-background overflow-hidden">
-                {user.image ? (
+                {image ? (
                   <Image
-                    src={user.image.url}
+                    src={image.url}
                     alt={user.name ?? ""}
                     className="object-cover"
                   />
@@ -70,8 +79,8 @@ export function UserSidebarMenu() {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <div className="size-8 rounded-lg bg-background overflow-hidden">
-                  {user.image ? (
-                    <Image src={user.image.url} alt={user.name ?? ""} />
+                  {image ? (
+                    <Image src={image.url} alt={user.name ?? ""} />
                   ) : (
                     <div className="text-muted-foreground flex items-center justify-center size-full">
                       {user.name?.charAt(0) ?? ""}

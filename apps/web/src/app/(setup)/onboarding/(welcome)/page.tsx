@@ -7,9 +7,7 @@ export default function Page() {
   return (
     <Container className="flex gap-6 h-full flex-col items-center justify-center">
       <div className="flex flex-col items-center justify-center gap-2">
-        <h1 className="text-center text-3xl font-bold">
-          Welcome to sunday.
-        </h1>
+        <h1 className="text-center text-3xl font-bold">Welcome to sunday.</h1>
         <p className="text-center font-medium">
           Let&apos;s set up your account.
         </p>

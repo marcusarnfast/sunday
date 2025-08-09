@@ -117,7 +117,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                     onMouseEnter={() => {
                       router.prefetch(item.url);
                     }}
-                    isActive={item.url === "/" ? pathname === "/" : pathname.includes(item.url)}
+                    isActive={
+                      item.url === "/"
+                        ? pathname === "/"
+                        : pathname.includes(item.url)
+                    }
                     className="data-[state=active]:bg-primary/10"
                   >
                     <item.icon />

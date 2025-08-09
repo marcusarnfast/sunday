@@ -4,9 +4,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-export default function SetupLayout({
-  children,
-}: Props) {
+export default function SetupLayout({ children }: Props) {
   return (
     <div className="h-svh w-full bg-primary text-primary-foreground">
       <div className="absolute top-4 left-4">

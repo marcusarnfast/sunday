@@ -1,5 +1,7 @@
 "use client";
 
+import type { Id } from "@sunday/monday/data-model";
+import { Button, buttonVariants } from "@sunday/ui/components/button";
 import {
   FormControl,
   FormDescription,
@@ -8,167 +10,246 @@ import {
   FormLabel,
   FormMessage,
 } from "@sunday/ui/components/form";
+import { Progress } from "@sunday/ui/components/progress";
+import { SlidingNumber } from "@sunday/ui/components/sliding-number";
+import { toast } from "@sunday/ui/components/sonner";
 import { cn } from "@sunday/ui/utils/cn";
-import { AlertCircleIcon, ImageUpIcon, XIcon } from "lucide-react";
+import { motion } from "framer-motion";
+import {
+  CloudUpload,
+  CloudUploadIcon,
+  FolderSearch2Icon,
+  Trash2Icon,
+} from "lucide-react";
 import { useEffect } from "react";
 import {
   type Control,
   type FieldValues,
   type Path,
+  type PathValue,
   useFormContext,
   useWatch,
 } from "react-hook-form";
-import { Image } from "~/components/miscellaneous/image";
-import type { FileMetadata } from "~/hooks/use-file-upload";
+import { FilePreview } from "~/components/miscellaneous/file-preview";
 import { useFileUpload } from "~/hooks/use-file-upload";
+import { useStorageUpload } from "~/hooks/use-storage";
 
 type Props<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
-  label: string;
-  maxSize?: number;
-  accept?: string;
   description?: string;
-  optional?: boolean;
+  path?: string;
+  accept?: string;
+  maxSize?: number;
   className?: string;
+  label?: string;
+  optional?: boolean;
 };
 
 export function UploadField<T extends FieldValues>({
   control,
+  description,
+  accept = "image/png, image/jpeg, image/webp",
+  path = "/",
+  maxSize = 5 * 1024 * 1024,
+  className,
   name,
   label,
-  maxSize = 5 * 1024 * 1024,
-  accept = "image/*",
-  description,
-  optional = false,
-  className,
+  optional,
 }: Props<T>) {
   const { setValue } = useFormContext<T>();
-  const file = useWatch({ control, name }) as File | FileMetadata | null;
+  const storageId = useWatch({ control, name }) as Id<"_storage"> | undefined;
 
-  const [state, actions] = useFileUpload({
-    accept,
-    multiple: false,
-    maxSize,
-    initialFiles: file && !(file instanceof File) ? [file] : [],
-    onFilesChange: ([first]) => {
+  const { uploadAsync, isPending, progress } = useStorageUpload({
+    onSuccess: (data) => {
+      setValue(name, data.storageId as PathValue<T, Path<T>>, {
+        shouldDirty: true,
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
     },
   });
 
-  const { files, errors, isDragging } = state;
-  const {
-    getInputProps,
-    openFileDialog,
-    removeFile,
-    handleDrop,
-    handleDragEnter,
-    handleDragLeave,
-    handleDragOver,
-  } = actions;
+  const [
+    { isDragging, errors },
+    {
+      handleDragEnter,
+      handleDragLeave,
+      handleDragOver,
+      handleDrop,
+      openFileDialog,
+      getInputProps,
+    },
+  ] = useFileUpload({
+    maxFiles: 1,
+    maxSize,
+    accept,
+    multiple: false,
+    onFilesChange: (files) => {
+      if (files.length > 0) {
+        const file = files[0]?.file as File;
+        uploadAsync({ file, path });
+      }
+    },
+  });
 
-  const previewUrl = files[0]?.preview;
+  const handleRemove = () => {
+    setValue(name, undefined as PathValue<T, Path<T>>, { shouldDirty: true });
+  };
+
+  const hasImage = Boolean(storageId);
 
   useEffect(() => {
-    const currentFile = files[0]?.file ?? null;
-
-    // Avoid setting the same value again
-    if (currentFile !== file) {
-      setValue(name, currentFile as T[typeof name], { shouldDirty: true });
+    if (errors.length > 0) {
+      toast.error(errors[0]);
     }
-  }, [files]);
-
+  }, [errors]);
 
   return (
-    <FormField
-      control={control}
-      name={name}
-      render={() => (
-        <FormItem>
-          <div className="flex items-center justify-between gap-1">
-            <FormLabel>{label}</FormLabel>
-            {optional && <span className="text-muted-foreground text-xs font-medium">Optional</span>}
-          </div>
-          <FormControl>
-            <div className="flex flex-col gap-2">
-              <div className="relative">
-                <div
-                  role="button"
-                  onClick={openFileDialog}
-                  onDragEnter={handleDragEnter}
-                  onDragLeave={handleDragLeave}
-                  onDragOver={handleDragOver}
-                  onDrop={handleDrop}
-                  data-dragging={isDragging || undefined}
-                  className={cn("border-input hover:bg-accent/50 data-[dragging=true]:bg-accent/50 has-[input:focus]:border-ring has-[input:focus]:ring-ring/50 relative flex min-h-52 flex-col items-center justify-center overflow-hidden rounded-xl border border-dashed p-4 transition-colors has-disabled:pointer-events-none has-disabled:opacity-50 has-[img]:border-none has-[input:focus]:ring-[3px]", className)}
-                >
-                  <input
-                    {...getInputProps()}
-                    className="sr-only"
-                    aria-label="Upload billede"
-                  />
-
-                  {previewUrl ? (
-                    <div className="absolute inset-0">
-                      <Image
-                        src={previewUrl}
-                        alt="Uploaded"
-                        fill
-                        className="size-full object-cover"
-                      />
-                    </div>
-                  ) : (
-                    <div className="flex flex-col items-center justify-center px-4 py-3 text-center">
-                      <div className="bg-background mb-2 flex size-11 shrink-0 items-center justify-center rounded-full border">
-                        <ImageUpIcon className="size-4 opacity-60" />
-                      </div>
-                      <p className="mb-1.5 text-sm font-medium">
-                        Drag an image or click to select
-                      </p>
-                      <p className="text-muted-foreground text-xs">
-                        Max size: 5MB
-                      </p>
-                    </div>
-                  )}
-                </div>
-
-                {previewUrl && (
-                  <div className="absolute top-4 right-4">
-                    <button
-                      type="button"
-                      className="focus-visible:border-ring focus-visible:ring-ring/50 z-50 flex size-8 items-center justify-center rounded-full bg-black/60 text-white hover:bg-black/80 focus-visible:ring-[3px]"
-                      onClick={() => {
-                        removeFile(files[0]?.id ?? "");
-                        setValue(name, null as T[typeof name], {
-                          shouldDirty: true,
-                        });
-                      }}
-                      aria-label="Remove image"
-                    >
-                      <XIcon className="size-4" />
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {errors.length > 0 && (
-                <div
-                  className="text-destructive flex items-center gap-1 text-xs"
-                  role="alert"
-                >
-                  <AlertCircleIcon className="size-3 shrink-0" />
-                  <span>{errors[0]}</span>
-                </div>
+    <>
+      <FormField
+        control={control}
+        name={name}
+        render={() => (
+          <FormItem>
+            <div className="flex items-center justify-between gap-1">
+              <FormLabel>{label}</FormLabel>
+              {optional && (
+                <span className="text-muted-foreground text-xs font-medium">
+                  Optional
+                </span>
               )}
             </div>
-          </FormControl>
-          {description && (
-            <FormDescription className="text-muted-foreground text-xs">
+            <FormControl>
+              <div
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    openFileDialog();
+                  }
+                }}
+                data-is-dragging={isDragging}
+                className={cn(
+                  "group relative aspect-[16/9] overflow-hidden",
+                  "border border-input rounded-lg shadow-xs transition-[color,box-shadow] duration-200",
+                  "data-[is-dragging=true]:has-data-[slot=upload-placeholder]:border-dashed",
+                  "data-[is-dragging=true]:border-ring data-[is-dragging=true]:ring-ring/50 data-[is-dragging=true]:ring-[3px]",
+                  "focus:outline-none focus:border-ring focus:ring-ring/50 focus:ring-[3px]",
+                  className,
+                )}
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                onClick={() => {
+                  if (!hasImage && !isDragging && !isPending) {
+                    openFileDialog();
+                  }
+                }}
+              >
+                <input {...getInputProps()} className="sr-only" tabIndex={-1} />
+
+                {hasImage || isPending ? (
+                  <>
+                    <FilePreview storageId={storageId} />
+                    <HoverOverlay
+                      openFileDialog={openFileDialog}
+                      handleRemove={handleRemove}
+                    />
+                    {isPending && <UploadProgress progress={progress} />}
+                  </>
+                ) : (
+                  <UploadPlaceholder />
+                )}
+              </div>
+            </FormControl>
+            <FormDescription className="text-xs text-muted-foreground">
               {description}
             </FormDescription>
-          )}
-          <FormMessage />
-        </FormItem>
-      )}
-    />
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </>
+  );
+}
+
+type HoverOverlayProps = {
+  openFileDialog: () => void;
+  handleRemove: () => void;
+};
+
+const HoverOverlay = ({ openFileDialog, handleRemove }: HoverOverlayProps) => (
+  <>
+    <div
+      data-slot="hover-overlay"
+      className="absolute inset-0 backdrop-brightness-25 opacity-0 group-hover:opacity-100 hidden group-hover:flex transition-opacity duration-200 gap-2 items-center justify-center"
+    >
+      <Button onClick={openFileDialog} variant="secondary" size="sm">
+        <CloudUploadIcon />
+        Change file
+      </Button>
+      <Button onClick={handleRemove} variant="destructive" size="sm">
+        <Trash2Icon />
+        Remove
+      </Button>
+    </div>
+  </>
+);
+
+type UploadProgressProps = {
+  progress: number;
+};
+
+const UploadProgress = ({ progress }: UploadProgressProps) => (
+  <>
+    <div
+      data-slot="upload-progress"
+      className="absolute inset-0 bg-muted flex flex-col gap-4 items-center justify-center"
+    >
+      <motion.div
+        initial={{ y: 0, fontSize: `${16}px` }}
+        animate={{ y: 0, fontSize: `${16}px` }}
+        transition={{
+          ease: [1, 0, 0.35, 0.95],
+          duration: 1.5,
+          delay: 0.3,
+        }}
+        className="leading-none text-muted-foreground font-medium"
+      >
+        <div className="inline-flex items-center gap-1">
+          <SlidingNumber value={Number(progress.toFixed(0))} />%
+        </div>
+      </motion.div>
+      <div className="w-2/3">
+        <Progress
+          value={progress}
+          className="h-1  [&_[data-slot=progress-indicator]]:bg-muted-foreground  bg-muted-foreground/20"
+        />
+      </div>
+    </div>
+  </>
+);
+
+function UploadPlaceholder() {
+  return (
+    <>
+      <div
+        data-slot="upload-placeholder"
+        className="absolute inset-0 bg-background flex flex-col gap-2 items-center justify-center hover:bg-muted"
+      >
+        <CloudUpload className="size-8 text-muted-foreground" />
+        <p className="text-foreground font-medium">Upload file</p>
+        <p className="text-sm text-muted-foreground font-medium">
+          Drag and drop a file here, or click to browse
+        </p>
+        <div className={buttonVariants({ variant: "outline", size: "sm" })}>
+          <FolderSearch2Icon />
+          Browse Files
+        </div>
+      </div>
+    </>
   );
 }

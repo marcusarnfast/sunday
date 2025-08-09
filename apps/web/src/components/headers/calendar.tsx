@@ -12,6 +12,6 @@ export function CalendarHeader() {
         <HeaderTitle>Calendar</HeaderTitle>
         <HeaderDescription>Manage your calendar</HeaderDescription>
       </HeaderContent>
-    </Header >
+    </Header>
   );
 }
