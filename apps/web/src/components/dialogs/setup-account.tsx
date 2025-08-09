@@ -8,7 +8,7 @@ import {
   DialogTitle,
 } from "@sunday/ui/components/dialog";
 import { preloadQuery } from "convex/nextjs";
-import { SetupAccount } from "../forms/setup-account";
+import { AccountForm } from "../forms/account";
 
 export async function SetupAccountDialog() {
   const token = await convexAuthNextjsToken();
@@ -30,7 +30,7 @@ export async function SetupAccountDialog() {
             Enter your name and upload a profile picture to get started.
           </DialogDescription>
         </DialogHeader>
-        <SetupAccount preloadedUser={preloadedUser} />
+        <AccountForm preloadedUser={preloadedUser} />
       </DialogContent>
     </Dialog>
   );

@@ -65,8 +65,8 @@ export const createOrUpdateHouse = mutation({
   args: {
     _id: v.optional(v.id("houses")),
     name: v.string(),
+    address: v.string(),
     description: v.optional(v.string()),
-    address: v.optional(v.string()),
     imageId: v.optional(v.id("_storage")),
   },
   handler: async (ctx, args) => {

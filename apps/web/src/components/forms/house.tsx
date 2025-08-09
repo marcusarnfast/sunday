@@ -17,7 +17,7 @@ import { UploadField } from "./fields/upload";
 const houseFormSchema = z.object({
   _id: z.string().optional(),
   name: z.string().min(1),
-  address: z.string().optional(),
+  address: z.string().min(1),
   description: z.string().optional(),
   imageId: z.string().optional(),
 });
@@ -34,12 +34,12 @@ export function HouseForm({ preloadedHouse }: HouseFormProps) {
     resolver: zodResolver(houseFormSchema),
     defaultValues: house
       ? {
-          ...house,
-        }
+        ...house,
+      }
       : {
-          name: "",
-          address: "",
-        },
+        name: "",
+        address: "",
+      },
   });
 
   const isDirty = form.formState.isDirty;
