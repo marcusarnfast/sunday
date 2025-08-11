@@ -56,8 +56,21 @@ export const createMembership = internalMutation({
     ),
   },
   handler: async (ctx, { houseId, userId, role }) => {
+    // Check if membership already exists
+    const existing = await ctx.db
+      .query("memberships")
+      .withIndex("by_house_and_user", (q) =>
+        q.eq("houseId", houseId).eq("userId", userId),
+      )
+      .unique();
+
+    if (existing) {
+      throw new Error("Membership already exists");
+    }
+
     return await ctx.db.insert("memberships", {
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       houseId,
       userId,
       role,
@@ -71,7 +84,10 @@ export const updateMembership = internalMutation({
     role: v.union(v.literal("moderator"), v.literal("member")),
   },
   handler: async (ctx, { membershipId, role }) => {
-    await ctx.db.patch(membershipId, { role });
+    return await ctx.db.patch(membershipId, {
+      role,
+      updatedAt: new Date().toISOString(),
+    });
   },
 });
 
@@ -79,5 +95,30 @@ export const deleteMembership = internalMutation({
   args: { membershipId: v.id("memberships") },
   handler: async (ctx, { membershipId }) => {
     return await ctx.db.delete(membershipId);
+  },
+});
+
+export const validateHouseMembership = internalQuery({
+  args: { houseId: v.id("houses") },
+  handler: async (ctx, { houseId }) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (!userId) throw new Error("Not authenticated");
+
+    const membership = await ctx.db
+      .query("memberships")
+      .withIndex("by_house_and_user", (q) =>
+        q.eq("houseId", houseId).eq("userId", userId),
+      )
+      .first();
+
+    if (!membership) {
+      throw new Error("You are not a member of this house");
+    }
+
+    return {
+      userId,
+      role: membership.role,
+    };
   },
 });

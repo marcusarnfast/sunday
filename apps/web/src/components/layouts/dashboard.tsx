@@ -19,7 +19,6 @@ import {
 import {
   CalendarIcon,
   HomeIcon,
-  LifeBuoyIcon,
   MailboxIcon,
   MapPinHouseIcon,
   UserRoundIcon,
@@ -79,11 +78,6 @@ const items = [
     title: "Inbox",
     url: "/inbox",
     icon: MailboxIcon,
-  },
-  {
-    title: "Support",
-    url: "/support",
-    icon: LifeBuoyIcon,
   },
   {
     title: "Account",

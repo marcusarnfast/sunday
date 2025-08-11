@@ -17,9 +17,12 @@ import type * as houses from "../houses.js";
 import type * as http from "../http.js";
 import type * as invitations from "../invitations.js";
 import type * as memberships from "../memberships.js";
+import type * as notifications from "../notifications.js";
+import type * as preferences from "../preferences.js";
 import type * as storage from "../storage.js";
 import type * as users from "../users.js";
 import type * as utils_mime from "../utils/mime.js";
+import type * as utils_preferences from "../utils/preferences.js";
 
 import type {
   ApiFromModules,
@@ -45,9 +48,12 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   invitations: typeof invitations;
   memberships: typeof memberships;
+  notifications: typeof notifications;
+  preferences: typeof preferences;
   storage: typeof storage;
   users: typeof users;
   "utils/mime": typeof utils_mime;
+  "utils/preferences": typeof utils_preferences;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

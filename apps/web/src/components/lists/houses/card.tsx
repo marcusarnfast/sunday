@@ -1,3 +1,5 @@
+"use client";
+
 import type { api } from "@sunday/monday/api";
 import { Button } from "@sunday/ui/components/button";
 import { useRouter } from "next/navigation";
@@ -12,6 +14,7 @@ export function HouseCard(props: HouseCardProps) {
   return (
     <Button
       variant={"outline"}
+      mode={"card"}
       size={"none"}
       className="aspect-[12/14] !rounded-2xl flex-col justify-start items-start p-2"
       onClick={() => router.push(`/houses/${_id}`)}

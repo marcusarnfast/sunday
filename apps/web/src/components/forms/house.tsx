@@ -34,12 +34,12 @@ export function HouseForm({ preloadedHouse }: HouseFormProps) {
     resolver: zodResolver(houseFormSchema),
     defaultValues: house
       ? {
-        ...house,
-      }
+          ...house,
+        }
       : {
-        name: "",
-        address: "",
-      },
+          name: "",
+          address: "",
+        },
   });
 
   const isDirty = form.formState.isDirty;

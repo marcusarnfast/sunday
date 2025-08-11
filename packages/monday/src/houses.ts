@@ -112,6 +112,7 @@ export const createOrUpdateHouse = mutation({
         userId,
         role: "owner",
         createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       });
     }
 

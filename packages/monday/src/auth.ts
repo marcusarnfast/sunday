@@ -2,6 +2,8 @@ import { Email } from "@convex-dev/auth/providers/Email";
 import { convexAuth } from "@convex-dev/auth/server";
 import { alphabet, generateRandomString } from "oslo/crypto";
 import { Resend as ResendAPI } from "resend";
+import { internal } from "./_generated/api";
+import type { MutationCtx } from "./_generated/server";
 
 // Now it would be really nice to be able use the resend component here with the react email generation... But i can't seem to get it to work...
 export const ResendOTP = Email({
@@ -28,6 +30,24 @@ export const ResendOTP = Email({
 
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [ResendOTP],
+  callbacks: {
+    async createOrUpdateUser(ctx: MutationCtx, args) {
+      const { profile } = args;
+
+      if (!profile.email) {
+        throw new Error("Email is required");
+      }
+
+      const { email } = profile;
+      const userId = await ctx.runMutation(internal.users.init, {
+        email,
+      });
+
+      await ctx.runMutation(internal.preferences.init, { userId });
+
+      return userId;
+    },
+  },
 });
 
 export const otpHTML = (token: string) => `

@@ -9,13 +9,12 @@ import { toast } from "@sunday/ui/components/sonner";
 import { useAction } from "convex/react";
 import { UserRoundPlusIcon } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useHotkeys } from "react-hotkeys-hook";
 import z from "zod/v4";
-import { SelectorField } from "./fields/selector";
 import { TextField } from "./fields/text";
 
 const inviteMemberFormSchema = z.object({
   email: z.email(),
-  role: z.enum(["admin", "member"]),
 });
 
 type InviteMemberFormProps = {
@@ -29,7 +28,6 @@ export function InviteMemberForm({ houseId }: InviteMemberFormProps) {
     resolver: zodResolver(inviteMemberFormSchema),
     defaultValues: {
       email: "",
-      role: "member",
     },
   });
 
@@ -41,10 +39,11 @@ export function InviteMemberForm({ houseId }: InviteMemberFormProps) {
     toast.promise(
       async () => {
         await inviteMemberAction({
-          email: data.email,
-          role: data.role as "member" | "moderator",
+          inviteeEmail: data.email,
           houseId: houseId as Id<"houses">,
         });
+
+        form.reset({ email: "" });
       },
       {
         loading: "Inviting member...",
@@ -53,6 +52,17 @@ export function InviteMemberForm({ houseId }: InviteMemberFormProps) {
       },
     );
   };
+
+  useHotkeys(
+    "mod+s",
+    () => {
+      form.handleSubmit(handleSubmit)();
+    },
+    {
+      enabled: isDirty,
+      enableOnFormTags: true,
+    },
+  );
 
   return (
     <Form {...form}>
@@ -68,17 +78,6 @@ export function InviteMemberForm({ houseId }: InviteMemberFormProps) {
             label="Email"
             placeholder="Email"
           />
-          <SelectorField
-            control={form.control}
-            name="role"
-            label="Role"
-            placeholder="Role"
-            options={[
-              { label: "Member", value: "member" },
-              { label: "Moderator", value: "moderator" },
-            ]}
-          />
-
           <div className="flex justify-end">
             <Button type="submit" form="form" disabled={!isDirty}>
               Invite member <UserRoundPlusIcon />

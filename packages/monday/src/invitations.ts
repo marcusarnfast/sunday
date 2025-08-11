@@ -2,87 +2,68 @@ import { getAuthUserId } from "@convex-dev/auth/server";
 import { internalMutation, query } from "@sunday/monday/server";
 import { v } from "convex/values";
 
-export const listMyInvitations = query({
-  args: { email: v.string() },
-  handler: async (ctx, { email }) => {
+export const getById = query({
+  args: {
+    id: v.id("invitations"),
+  },
+  handler: async (ctx, { id }) => {
     const userId = await getAuthUserId(ctx);
 
     if (!userId) {
       throw new Error("Not authenticated");
     }
 
-    return await ctx.db
-      .query("invitations")
-      .withIndex("by_status_email", (q) =>
-        q.eq("status", "pending").eq("invitedUserEmail", email),
-      )
-      .collect();
+    return await ctx.db.get(id);
   },
 });
 
 export const createInvitation = internalMutation({
   args: {
     houseId: v.id("houses"),
-    invitedBy: v.id("users"),
-    invitedUserEmail: v.string(),
-    role: v.union(v.literal("moderator"), v.literal("member")),
+    inviteeEmail: v.string(),
   },
-  handler: async (ctx, args) => {
-    await ctx.db.insert("invitations", {
-      ...args,
+  handler: async (ctx, { houseId, inviteeEmail }) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (!userId) {
+      throw new Error("Not authenticated");
+    }
+
+    const invitationId = await ctx.db.insert("invitations", {
+      houseId,
+      inviteeEmail,
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      inviterId: userId,
       status: "pending",
     });
+
+    return invitationId;
   },
 });
 
 export const acceptInvitation = internalMutation({
   args: {
-    userId: v.id("users"),
-    invitedUserEmail: v.string(),
-    houseId: v.id("houses"),
+    invitationId: v.id("invitations"),
   },
-  handler: async (ctx, args) => {
-    const invite = await ctx.db
-      .query("invitations")
-      .withIndex("by_status_email", (q) =>
-        q.eq("status", "pending").eq("invitedUserEmail", args.invitedUserEmail),
-      )
-      .filter((i) => i.eq(i.field("houseId"), args.houseId))
-      .first();
-
-    if (!invite) throw new Error("No valid invitation");
-
-    await ctx.db.insert("memberships", {
-      houseId: args.houseId,
-      userId: args.userId,
-      role: invite.role,
-      createdAt: new Date().toISOString(),
+  handler: async (ctx, { invitationId }) => {
+    return await ctx.db.patch(invitationId, {
+      updatedAt: new Date().toISOString(),
+      acceptedAt: new Date().toISOString(),
+      status: "accepted",
     });
-
-    await ctx.db.patch(invite._id, { status: "accepted" });
   },
 });
 
-export const revokeInvitation = internalMutation({
+export const declineInvitation = internalMutation({
   args: {
-    userId: v.id("users"),
-    invitedUserEmail: v.string(),
-    houseId: v.id("houses"),
+    invitationId: v.id("invitations"),
   },
-  handler: async (ctx, args) => {
-    const invite = await ctx.db
-      .query("invitations")
-      .withIndex("by_status_email", (q) =>
-        q.eq("status", "pending").eq("invitedUserEmail", args.invitedUserEmail),
-      )
-      .filter((i) => i.eq(i.field("houseId"), args.houseId))
-      .first();
-
-    if (!invite) throw new Error("No invite to revoke");
-
-    await ctx.db.patch(invite._id, {
-      status: "revoked",
+  handler: async (ctx, { invitationId }) => {
+    return await ctx.db.patch(invitationId, {
+      updatedAt: new Date().toISOString(),
+      declinedAt: new Date().toISOString(),
+      status: "declined",
     });
   },
 });
