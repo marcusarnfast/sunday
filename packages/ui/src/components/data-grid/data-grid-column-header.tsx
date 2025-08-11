@@ -1,5 +1,4 @@
 import { Button } from "@sunday/ui/components/button";
-import { useDataGrid } from "@sunday/ui/components/data-grid";
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -28,6 +27,7 @@ import {
   Settings2,
 } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
+import { useDataGrid } from "./data-grid";
 
 interface DataGridColumnHeaderProps<TData, TValue>
   extends HTMLAttributes<HTMLDivElement> {

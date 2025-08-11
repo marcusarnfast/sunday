@@ -1,5 +1,4 @@
 import { Checkbox } from "@sunday/ui/components/checkbox";
-import { useDataGrid } from "@sunday/ui/components/data-grid";
 import { cn } from "@sunday/ui/utils/cn";
 import {
   type Cell,
@@ -12,6 +11,7 @@ import {
 import { cva } from "class-variance-authority";
 import type * as React from "react";
 import { type CSSProperties, Fragment, type ReactNode } from "react";
+import { useDataGrid } from "./data-grid";
 
 const headerCellSpacingVariants = cva("", {
   variants: {

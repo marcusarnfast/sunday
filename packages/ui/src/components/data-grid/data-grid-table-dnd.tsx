@@ -16,7 +16,6 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@sunday/ui/components/button";
-import { useDataGrid } from "@sunday/ui/components/data-grid";
 import {
   DataGridTableBase,
   DataGridTableBody,
@@ -41,6 +40,7 @@ import {
 } from "@tanstack/react-table";
 import { GripVertical } from "lucide-react";
 import { type CSSProperties, Fragment, useId } from "react";
+import { useDataGrid } from "./data-grid";
 
 function DataGridTableDndHeader<TData>({
   header,

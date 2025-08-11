@@ -1,5 +1,4 @@
 import { Button } from "@sunday/ui/components/button";
-import { useDataGrid } from "@sunday/ui/components/data-grid";
 import {
   Select,
   SelectContent,
@@ -11,6 +10,7 @@ import { Skeleton } from "@sunday/ui/components/skeleton";
 import { cn } from "@sunday/ui/utils/cn";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { useDataGrid } from "./data-grid";
 
 interface DataGridPaginationProps {
   sizes?: number[];

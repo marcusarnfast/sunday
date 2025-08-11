@@ -17,7 +17,6 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Button } from "@sunday/ui/components/button";
-import { useDataGrid } from "@sunday/ui/components/data-grid";
 import {
   DataGridTableBase,
   DataGridTableBody,
@@ -40,6 +39,7 @@ import {
 } from "@tanstack/react-table";
 import { GripHorizontal } from "lucide-react";
 import { type CSSProperties, useId } from "react";
+import { useDataGrid } from "./data-grid";
 
 function DataGridTableDndRowHandle({ rowId }: { rowId: string }) {
   const { attributes, listeners } = useSortable({
