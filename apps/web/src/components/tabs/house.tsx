@@ -10,7 +10,13 @@ import { InviteMemberDialog } from "../dialogs/invite-member";
 import { HouseForm } from "../forms/house";
 import HouseCalendar from "../house-calendar";
 import HouseTodo from "../house-todo";
-import { HouseMembershipsList } from "../lists/house-memberships";
+import { HouseMembershipsTable } from "../lists/memberships/table";
+import {
+  TabHeader,
+  TabHeaderActions,
+  TabHeaderDescription,
+  TabHeaderTitle,
+} from "../miscellaneous/tabs-header";
 
 type HouseTabsProps = {
   houseId: Id<"houses">;
@@ -29,58 +35,52 @@ export function HouseTabs({
     <Tabs value={tab}>
       <Container>
         <TabsContent value="overview">
-          <div className="flex gap-4 justify-between pb-6">
-            <div>
-              <h2 className="text-xl font-semibold">Overview</h2>
-              <p className="text-sm text-muted-foreground">
-                View and manage bookings for your house.
-              </p>
-            </div>
-          </div>
+          <TabHeader>
+            <TabHeaderTitle>Overview</TabHeaderTitle>
+            <TabHeaderDescription>
+              View and manage bookings for your house.
+            </TabHeaderDescription>
+          </TabHeader>
         </TabsContent>
         <TabsContent value="calendar">
-          <div className="flex gap-4 justify-between pb-6">
-            <div>
-              <h2 className="text-xl font-semibold">Calendar</h2>
-              <p className="text-sm text-muted-foreground">
-                View and manage bookings for your house.
-              </p>
-            </div>
-          </div>
+          <TabHeader>
+            <TabHeaderTitle>Calendar</TabHeaderTitle>
+            <TabHeaderDescription>
+              View and manage bookings for your house.
+            </TabHeaderDescription>
+          </TabHeader>
           <HouseCalendar />
         </TabsContent>
         <TabsContent value="tasks">
-          <div className="flex gap-4 justify-between pb-6">
-            <div>
-              <h2 className="text-xl font-semibold">Tasks</h2>
-              <p className="text-sm text-muted-foreground">
-                View and manage tasks for your house.
-              </p>
-            </div>
-          </div>
+          <TabHeader>
+            <TabHeaderTitle>Tasks</TabHeaderTitle>
+            <TabHeaderDescription>
+              View and manage tasks for your house.
+            </TabHeaderDescription>
+          </TabHeader>
           <HouseTodo />
         </TabsContent>
         <TabsContent value="members">
-          <div className="flex gap-4 justify-between pb-6">
+          <TabHeader>
             <div>
-              <h2 className="text-xl font-semibold">Members</h2>
-              <p className="text-sm text-muted-foreground">
+              <TabHeaderTitle>Members</TabHeaderTitle>
+              <TabHeaderDescription>
                 Invite new members to your house or manage existing memberships.
-              </p>
+              </TabHeaderDescription>
             </div>
-            <InviteMemberDialog houseId={houseId} />
-          </div>
-          <HouseMembershipsList preloadedMemberships={preloadedMemberships} />
+            <TabHeaderActions>
+              <InviteMemberDialog houseId={houseId} />
+            </TabHeaderActions>
+          </TabHeader>
+          <HouseMembershipsTable preloadedMemberships={preloadedMemberships} />
         </TabsContent>
         <TabsContent value="edit">
-          <div className="flex gap-4 justify-between pb-6">
-            <div>
-              <h2 className="text-xl font-semibold">Edit house</h2>
-              <p className="text-sm text-muted-foreground">
-                Edit the details of your house.
-              </p>
-            </div>
-          </div>
+          <TabHeader>
+            <TabHeaderTitle>Edit house</TabHeaderTitle>
+            <TabHeaderDescription>
+              Edit the details of your house.
+            </TabHeaderDescription>
+          </TabHeader>
           <HouseForm preloadedHouse={preloadedHouse} />
         </TabsContent>
       </Container>

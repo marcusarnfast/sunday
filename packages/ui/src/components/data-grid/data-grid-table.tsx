@@ -477,7 +477,7 @@ function DataGridTableRowSelectAll({ size }: { size?: "sm" | "md" | "lg" }) {
       disabled={isLoading || recordCount === 0}
       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
       aria-label="Select all"
-      size={size}
+      size={size ?? "sm"}
       className="align-[inherit]"
     />
   );
