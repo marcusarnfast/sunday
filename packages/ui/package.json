@@ -13,7 +13,7 @@
     "./utils/*": "./src/utils/*.ts",
     "./constants/*": "./src/constants/*.ts",
     "./components/event-calendar": "./src/components/event-calendar/index.ts",
-    "./components/data-grid": "./src/components/data-grid/index.tsx"
+    "./components/data-grid": "./src/components/data-grid/index.ts"
   },
   "scripts": {
     "clean": "git clean -xdf .cache .turbo dist node_modules",
