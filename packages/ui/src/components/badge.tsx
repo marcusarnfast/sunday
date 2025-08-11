@@ -1,11 +1,11 @@
-import { Slot } from "@radix-ui/react-slot";
 import { cn } from "@sunday/ui/utils/cn";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Slot as SlotPrimitive } from "radix-ui";
 import type * as React from "react";
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
+  VariantProps<typeof badgeVariants> {
   asChild?: boolean;
   dotClassName?: string;
   disabled?: boolean;
@@ -13,7 +13,7 @@ export interface BadgeProps
 
 export interface BadgeButtonProps
   extends React.ButtonHTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeButtonVariants> {
+  VariantProps<typeof badgeButtonVariants> {
   asChild?: boolean;
 }
 
@@ -194,7 +194,7 @@ function Badge({
   ...props
 }: React.ComponentProps<"span"> &
   VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span";
+  const Comp = asChild ? SlotPrimitive.Slot : "span";
 
   return (
     <Comp
@@ -215,7 +215,7 @@ function BadgeButton({
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof badgeButtonVariants> & { asChild?: boolean }) {
-  const Comp = asChild ? Slot : "span";
+  const Comp = asChild ? SlotPrimitive.Slot : "span";
   return (
     <Comp
       data-slot="badge-button"
