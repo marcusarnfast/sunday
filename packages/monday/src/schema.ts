@@ -124,6 +124,54 @@ const schema = defineSchema({
     }),
   }).index("by_user", ["userId"]),
 
+  tasks: defineTable({
+    createdAt: v.string(), // ISO 8601 format
+    updatedAt: v.string(), // ISO 8601 format
+    houseId: v.id("houses"),
+    title: v.string(),
+    status: v.union(v.literal("pending"), v.literal("done")),
+    createdBy: v.id("users"),
+    doneBy: v.optional(v.id("users")),
+    sortOrder: v.optional(v.string()),
+  })
+    .index("by_house", ["houseId"])
+    .index("by_status", ["status"])
+    .index("by_created_by", ["createdBy"])
+    .index("by_done_by", ["doneBy"])
+    .index("by_house_and_sort_order", ["houseId", "sortOrder"]),
+
+  activities: defineTable({
+    createdAt: v.string(), // ISO 8601
+    houseId: v.id("houses"),
+    type: v.union(
+      // Task-related
+      v.literal("task-created"),
+      v.literal("task-updated"),
+      v.literal("task-done"),
+      v.literal("task-deleted"),
+      // Booking-related
+      v.literal("booking-created"),
+      v.literal("booking-approved"),
+      v.literal("booking-declined"),
+      v.literal("booking-cancelled"),
+      // Invitation-related
+      v.literal("invitation-sent"),
+      v.literal("invitation-accepted"),
+      v.literal("invitation-declined"),
+    ),
+    actorId: v.id("users"),
+    target: v.object({
+      taskId: v.optional(v.id("tasks")),
+      bookingId: v.optional(v.id("bookings")),
+      invitationId: v.optional(v.id("invitations")),
+    }),
+    metadata: v.optional(v.any()),
+  })
+    .index("by_house", ["houseId"])
+    .index("by_actor", ["actorId"])
+    .index("by_type", ["type"])
+    .index("by_house_and_type", ["houseId", "type"]),
+
   ...authTables,
 
   users: defineTable({

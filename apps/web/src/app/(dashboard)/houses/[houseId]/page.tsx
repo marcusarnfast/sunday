@@ -13,7 +13,7 @@ export default async function Page({ params }: Props) {
   const { houseId } = await params;
   const token = await convexAuthNextjsToken();
 
-  const [preloadedHouse, preloadedMemberships] = await Promise.all([
+  const [preloadedHouse, preloadedMemberships, preloadedTasks] = await Promise.all([
     preloadQuery(
       api.houses.getById,
       {
@@ -30,6 +30,13 @@ export default async function Page({ params }: Props) {
       },
       { token },
     ),
+    preloadQuery(
+      api.tasks.getTasksByHouseId,
+      {
+        houseId,
+      },
+      { token },
+    ),
   ]);
 
   return (
@@ -39,6 +46,7 @@ export default async function Page({ params }: Props) {
         houseId={houseId}
         preloadedHouse={preloadedHouse}
         preloadedMemberships={preloadedMemberships}
+        preloadedTasks={preloadedTasks}
       />
     </>
   );

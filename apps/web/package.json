@@ -14,12 +14,18 @@
     "format-and-lint:fix": "biome check . --write"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@dnd-kit/modifiers": "^9.0.0",
+    "@dnd-kit/sortable": "^10.0.0",
+    "@dnd-kit/utilities": "^3.2.2",
     "@hookform/resolvers": "catalog:",
     "@sunday/monday": "workspace:*",
     "@sunday/ui": "workspace:*",
     "@t3-oss/env-nextjs": "catalog:",
     "@tailwindcss/postcss": "catalog:",
+    "fractional-indexing": "^3.2.0",
     "framer-motion": "^12.23.11",
+    "jittered-fractional-indexing": "^1.0.0",
     "lucide-react": "catalog:",
     "mime-db": "^1.54.0",
     "next": "catalog:",

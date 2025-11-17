@@ -144,7 +144,7 @@ function DataGridTableDnd<TData>({
       sensors={sensors}
     >
       <div className="relative">
-        <DataGridTableBase>
+        <DataGridTableBase className="rounded-lg">
           <DataGridTableHead>
             {table
               .getHeaderGroups()

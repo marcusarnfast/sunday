@@ -9,6 +9,7 @@
  */
 
 import type * as actions from "../actions.js";
+import type * as activities from "../activities.js";
 import type * as auth from "../auth.js";
 import type * as crons from "../crons.js";
 import type * as email from "../email.js";
@@ -20,6 +21,7 @@ import type * as memberships from "../memberships.js";
 import type * as notifications from "../notifications.js";
 import type * as preferences from "../preferences.js";
 import type * as storage from "../storage.js";
+import type * as tasks from "../tasks.js";
 import type * as users from "../users.js";
 import type * as utils_mime from "../utils/mime.js";
 import type * as utils_preferences from "../utils/preferences.js";
@@ -40,6 +42,7 @@ import type {
  */
 declare const fullApi: ApiFromModules<{
   actions: typeof actions;
+  activities: typeof activities;
   auth: typeof auth;
   crons: typeof crons;
   email: typeof email;
@@ -51,6 +54,7 @@ declare const fullApi: ApiFromModules<{
   notifications: typeof notifications;
   preferences: typeof preferences;
   storage: typeof storage;
+  tasks: typeof tasks;
   users: typeof users;
   "utils/mime": typeof utils_mime;
   "utils/preferences": typeof utils_preferences;

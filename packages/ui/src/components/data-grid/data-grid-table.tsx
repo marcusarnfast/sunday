@@ -203,8 +203,9 @@ function DataGridTableBody({ children }: { children: ReactNode }) {
       className={cn(
         "[&_tr:last-child]:border-0",
         props.tableLayout?.rowRounded &&
-        "[&_td:first-child]:rounded-s-lg [&_td:last-child]:rounded-e-lg",
+        "[&_td:first-child]:rounded-s-xl [&_td:last-child]:rounded-e-lg",
         props.tableClassNames?.body,
+        "rounded-4xl"
       )}
     >
       {children}

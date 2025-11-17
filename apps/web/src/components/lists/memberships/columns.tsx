@@ -17,7 +17,7 @@ export const columns: ColumnDef<RowData>[] = [
   {
     accessorKey: "id",
     id: "id",
-    header: () => <DataGridTableRowSelectAll size="sm" />,
+    header: () => <DataGridTableRowSelectAll />,
     cell: ({ row }) => <DataGridTableRowSelect row={row} />,
     enableSorting: false,
     size: 35,

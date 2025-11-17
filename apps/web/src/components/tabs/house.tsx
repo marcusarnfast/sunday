@@ -8,9 +8,12 @@ import type { Preloaded } from "convex/react";
 import { useHouseParams } from "~/hooks/use-house-params";
 import { InviteMemberDialog } from "../dialogs/invite-member";
 import { HouseForm } from "../forms/house";
+import { TaskForm } from "../forms/task";
 import HouseCalendar from "../house-calendar";
 import HouseTodo from "../house-todo";
 import { HouseMembershipsTable } from "../lists/memberships/table";
+import TasksList from "../lists/tasks";
+import { HouseTasksTable } from "../lists/tasks/table";
 import {
   TabHeader,
   TabHeaderActions,
@@ -22,12 +25,14 @@ type HouseTabsProps = {
   houseId: Id<"houses">;
   preloadedHouse: Preloaded<typeof api.houses.getById>;
   preloadedMemberships: Preloaded<typeof api.memberships.getHouseMemberships>;
+  preloadedTasks: Preloaded<typeof api.tasks.getTasksByHouseId>;
 };
 
 export function HouseTabs({
   houseId,
   preloadedHouse,
   preloadedMemberships,
+  preloadedTasks,
 }: HouseTabsProps) {
   const { params } = useHouseParams();
   const { tab } = params;
@@ -58,7 +63,8 @@ export function HouseTabs({
               View and manage tasks for your house.
             </TabHeaderDescription>
           </TabHeader>
-          <HouseTodo />
+          <TaskForm />
+          <TasksList />
         </TabsContent>
         <TabsContent value="members">
           <TabHeader>
